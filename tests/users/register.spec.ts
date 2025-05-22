@@ -143,6 +143,7 @@ describe('POST /auth/register', () => {
             // assert
             const userRepository = connection.getRepository(User)
             const users = await userRepository.find()
+
             // check if the user entered password is not same as password stored in DB
             expect(users[0].password).not.toBe(userData.password)
             expect(users[0].password).toHaveLength(60)
@@ -150,6 +151,7 @@ describe('POST /auth/register', () => {
         })
 
         it('should return 400 if email is already present', async () => {
+            // Arrange
             const userData = {
                 firstName: 'Nithin',
                 lastName: 'V Kumar',
@@ -172,5 +174,47 @@ describe('POST /auth/register', () => {
             expect(users).toHaveLength(1)
         })
     })
-    describe('fields are missing', () => {})
+    describe('fields are missing', () => {
+        it('should return status code 400 if email field is empty', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: '',
+                password: 'secret',
+            }
+
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData)
+
+            expect(response.statusCode).toBe(400)
+
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+
+            expect(users).toHaveLength(0)
+        })
+    })
+
+    describe('all fields are not in format', () => {
+        it('should trim the email field', async () => {
+            // Arrange
+
+            const userData = {
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: ' something@something.com ',
+                password: 'secret',
+            }
+
+            // act
+            await request(app).post('/auth/register').send(userData)
+
+            // assert
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            expect(users[0].email).toBe('something@something.com')
+        })
+    })
 })

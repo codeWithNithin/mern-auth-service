@@ -7,11 +7,7 @@ describe('POST /auth/register', () => {
     let connection: DataSource
 
     beforeAll(async () => {
-        try {
-            connection = await AppDataSource.initialize()
-        } catch (error) {
-            console.error(error)
-        }
+        connection = await AppDataSource.initialize()
     })
 
     beforeEach(async () => {
@@ -104,7 +100,12 @@ describe('POST /auth/register', () => {
                 .send(userData)
 
             // assert
-            expect(response.body).toHaveProperty('id')
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            expect(users[0]).toHaveProperty('id')
+            expect((response.body as Record<string, string>).id).toBe(
+                users[0].id,
+            )
         })
     })
     describe('fields are missing', () => {})

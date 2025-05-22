@@ -8,8 +8,7 @@ const startServer = () => {
         app.listen(PORT, () => {
             logger.info('server running at PORT', { port: PORT })
         })
-    } catch (error) {
-        console.error(error)
+    } catch {
         process.exit(1)
     }
 }

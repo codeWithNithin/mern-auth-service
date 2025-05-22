@@ -16,7 +16,7 @@ export class UserService {
                 password,
                 role: Roles.CUSTOMER,
             })
-        } catch {
+        } catch (error) {
             const err = createHttpError(
                 500,
                 'failed to store the data in database',

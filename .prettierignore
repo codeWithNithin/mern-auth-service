@@ -1,3 +1,9 @@
 dist
 
 converage
+
+tsconfig.json
+
+package.json
+
+package-lock.json

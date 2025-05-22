@@ -121,11 +121,55 @@ describe('POST /auth/register', () => {
             // Act
             await request(app).post('/auth/register').send(userData)
 
-            // Act
+            // Assert
             const userRepository = connection.getRepository(User)
             const users = await userRepository.find()
             expect(users[0]).toHaveProperty('role')
             expect(users[0].role).toBe(Roles.CUSTOMER)
+        })
+
+        it('should store hashed password in database', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: 'something@something.com',
+                password: 'secret',
+            }
+
+            // Act
+            await request(app).post('/auth/register').send(userData)
+
+            // assert
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            // check if the user entered password is not same as password stored in DB
+            expect(users[0].password).not.toBe(userData.password)
+            expect(users[0].password).toHaveLength(60)
+            expect(users[0].password).toMatch(/^\$2b\$\d+\$/)
+        })
+
+        it('should return 400 if email is already present', async () => {
+            const userData = {
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: 'something@something.com',
+                password: 'secret',
+            }
+
+            // Act
+
+            const userRepository = connection.getRepository(User)
+            await userRepository.save({ ...userData, role: Roles.CUSTOMER })
+
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData)
+
+            const users = await userRepository.find()
+
+            expect(response.statusCode).toBe(400)
+            expect(users).toHaveLength(1)
         })
     })
     describe('fields are missing', () => {})

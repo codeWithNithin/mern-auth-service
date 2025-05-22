@@ -26,10 +26,10 @@ export default tseslint.config(
             'dot-notation': 'error',
             '@typescript-eslint/no-misused-promises': 'off',
             '@typescript-eslint/no-unsafe-assignment': 'off',
-            "@typescript-eslint/no-unused-vars": [
+            '@typescript-eslint/no-unused-vars': [
                 'error',
-                { "argsIgnorePattern": "^", "caughtErrorsIgnorePattern": "^" }
-            ]
+                { argsIgnorePattern: '^', caughtErrorsIgnorePattern: '^' },
+            ],
         },
     },
 )

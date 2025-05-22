@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
     database: Config.DB_NAME,
     // dont use synchronize property in production
     // because, if any of the entity changes, it will update the database directly.
-    synchronize: Config.NODE_ENV === 'dev' || Config.NODE_ENV === 'test',
+    synchronize: false,
     logging: false,
     entities: [User],
     migrations: [],

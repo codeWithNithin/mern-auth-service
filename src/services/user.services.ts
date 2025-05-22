@@ -2,6 +2,7 @@ import { Repository } from 'typeorm'
 import { UserData } from '../types'
 import { User } from '../entity/User'
 import createHttpError from 'http-errors'
+import { Roles } from '../constants'
 
 export class UserService {
     constructor(private userRepository: Repository<User>) {}
@@ -13,6 +14,7 @@ export class UserService {
                 lastName,
                 email,
                 password,
+                role: Roles.CUSTOMER,
             })
         } catch {
             const err = createHttpError(

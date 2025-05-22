@@ -25,12 +25,11 @@ describe('POST /auth/register', () => {
         it('should return 201 status code', async () => {
             // AAA
             // Arrange
-
             const userData = {
                 firstName: 'Nithin',
                 lastName: 'V Kumar',
                 email: 'something@something.com',
-                password: 'secret',
+                password: 'secret-password',
             }
 
             // Act
@@ -50,7 +49,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Nithin',
                 lastName: 'V Kumar',
                 email: 'something@something.com',
-                password: 'secret',
+                password: 'secret-password',
             }
 
             // Act
@@ -72,7 +71,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Nithin',
                 lastName: 'V Kumar',
                 email: 'something@something.com',
-                password: 'secret',
+                password: 'secret-password',
             }
 
             // Act
@@ -92,7 +91,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Nithin',
                 lastName: 'V Kumar',
                 email: 'something@something.com',
-                password: 'secret',
+                password: 'secret-password',
             }
 
             // Act
@@ -115,7 +114,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Nithin',
                 lastName: 'V Kumar',
                 email: 'something@something.com',
-                password: 'secret',
+                password: 'secret-password',
             }
 
             // Act
@@ -134,7 +133,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Nithin',
                 lastName: 'V Kumar',
                 email: 'something@something.com',
-                password: 'secret',
+                password: 'secret-password',
             }
 
             // Act
@@ -156,7 +155,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Nithin',
                 lastName: 'V Kumar',
                 email: 'something@something.com',
-                password: 'secret',
+                password: 'secret-password',
             }
 
             // Act
@@ -181,7 +180,7 @@ describe('POST /auth/register', () => {
                 firstName: 'Nithin',
                 lastName: 'V Kumar',
                 email: '',
-                password: 'secret',
+                password: 'secret-password',
             }
 
             const response = await request(app)
@@ -195,17 +194,86 @@ describe('POST /auth/register', () => {
 
             expect(users).toHaveLength(0)
         })
+
+        it('it should return status code 400 if firstName is missing', async () => {
+            // ARRANGE
+            const userData = {
+                firstName: '',
+                lastName: 'V Kumar',
+                email: 'something@something.com',
+                password: 'secret-password',
+            }
+            // ACT
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData)
+
+            // ASSERT
+            expect(response.statusCode).toBe(400)
+
+            // Make sure that when bad request err is thrown, no user data should be created in database
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+
+            expect(users).toHaveLength(0)
+        })
+
+        it('it should return status code 400 if lastName is missing', async () => {
+            // ARRANGE
+            const userData = {
+                firstName: 'Nithin',
+                lastName: '',
+                email: 'something@something.com',
+                password: 'secret-password',
+            }
+            // ACT
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData)
+
+            // ASSERT
+            expect(response.statusCode).toBe(400)
+
+            // Make sure that when bad request err is thrown, no user data should be created in database
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+
+            expect(users).toHaveLength(0)
+        })
+
+        it('it should return status code 400 if password is missing', async () => {
+            // ARRANGE
+            const userData = {
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: 'something@something.com',
+                password: '',
+            }
+
+            // ACT
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData)
+
+            // ASSERT
+            expect(response.statusCode).toBe(400)
+
+            // Make sure that when bad request err is thrown, no user data should be created in database
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+
+            expect(users).toHaveLength(0)
+        })
     })
 
     describe('all fields are not in format', () => {
         it('should trim the email field', async () => {
             // Arrange
-
             const userData = {
                 firstName: 'Nithin',
                 lastName: 'V Kumar',
                 email: ' something@something.com ',
-                password: 'secret',
+                password: 'secret-password',
             }
 
             // act
@@ -215,6 +283,73 @@ describe('POST /auth/register', () => {
             const userRepository = connection.getRepository(User)
             const users = await userRepository.find()
             expect(users[0].email).toBe('something@something.com')
+        })
+
+        it('should return 400 status code if email is not a valid email', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: 'nithin',
+                password: 'secret-password',
+            }
+
+            // act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData)
+
+            expect(response.statusCode).toBe(400)
+
+            // Assert
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            expect(users).toHaveLength(0)
+        })
+
+        it('should return 400 status code if password length is less than 8 charecters', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: 'something@something.com',
+                password: 'secret',
+            }
+
+            // act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData)
+            expect(response.statusCode).toBe(400)
+
+            // Assert
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            expect(users).toHaveLength(0)
+        })
+
+        it('should return array of messages if email is missing', async () => {
+            // Arrange
+            const userData = {
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: '',
+                password: 'secret-password',
+            }
+
+            // act
+            const response = await request(app)
+                .post('/auth/register')
+                .send(userData)
+
+            expect(
+                Array.isArray((response.body as Record<string, string>).errors),
+            ).toBe(true)
+
+            // Assert
+            const userRepository = connection.getRepository(User)
+            const users = await userRepository.find()
+            expect(users).toHaveLength(0)
         })
     })
 })

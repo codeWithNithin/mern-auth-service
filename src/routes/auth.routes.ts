@@ -8,6 +8,7 @@ import registerValidator from '../validators/register.validator'
 import { RefreshToken } from '../entity/RefreshToken'
 import { TokenService } from '../services/token.services'
 import loginValidator from '../validators/login.validator'
+import { CredentialService } from '../services/credential.services'
 
 const authRouter = Router()
 
@@ -16,8 +17,14 @@ const refreshTokenRepo = AppDataSource.getRepository(RefreshToken)
 
 const userService = new UserService(userRepository)
 const tokenService = new TokenService(refreshTokenRepo)
+const credentialService = new CredentialService()
 
-const authController = new AuthController(userService, logger, tokenService)
+const authController = new AuthController(
+    userService,
+    logger,
+    tokenService,
+    credentialService,
+)
 
 // we are adding additional callback because of context it is choosing.
 

@@ -1,5 +1,4 @@
 import { NextFunction, Response } from 'express'
-import bcrypt from 'bcrypt'
 import { RegisterUserRequest } from '../types'
 import { UserService } from '../services/user.services'
 import { Logger } from 'winston'
@@ -7,12 +6,14 @@ import { validationResult } from 'express-validator'
 import { JwtPayload } from 'jsonwebtoken'
 import { TokenService } from '../services/token.services'
 import createHttpError from 'http-errors'
+import { CredentialService } from '../services/credential.services'
 
 export class AuthController {
     constructor(
         private userService: UserService,
         private logger: Logger,
         private tokenService: TokenService,
+        private credentialService: CredentialService,
     ) {}
 
     async register(
@@ -113,10 +114,11 @@ export class AuthController {
                 return
             }
 
-            const isPasswordCorrect = await bcrypt.compare(
-                password,
-                user.password,
-            )
+            const isPasswordCorrect =
+                await this.credentialService.comparePassword(
+                    password,
+                    user.password,
+                )
 
             if (!isPasswordCorrect) {
                 const error = createHttpError(

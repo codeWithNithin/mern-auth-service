@@ -1,16 +1,16 @@
-import fs from 'fs'
 import { NextFunction, Response } from 'express'
 import { RegisterUserRequest } from '../types'
 import { UserService } from '../services/user.services'
 import { Logger } from 'winston'
 import { validationResult } from 'express-validator'
-import { JwtPayload, sign } from 'jsonwebtoken'
-import { Config } from '../config'
+import { JwtPayload } from 'jsonwebtoken'
+import { TokenService } from '../services/token.services'
 
 export class AuthController {
     constructor(
         private userService: UserService,
         private logger: Logger,
+        private tokenService: TokenService,
     ) {}
 
     async register(
@@ -49,24 +49,23 @@ export class AuthController {
                 role: user.role,
             }
 
-            const privateKey = fs.readFileSync('./certs/private.pem')
+            // generate access token
+            const accessToken = this.tokenService.generateAccessToken(payload)
 
-            const accessToken = sign(payload, privateKey, {
-                algorithm: 'RS256',
-                expiresIn: '1h',
-                issuer: 'auth-service',
-            })
+            // save refresh token in DB
+            const newRefreshToken =
+                await this.tokenService.persistRefreshToken(user)
 
-            const refreshToken = sign(payload, Config.REFRESH_TOKEN_SECRET!, {
-                algorithm: 'HS256',
-                expiresIn: '1y',
-                issuer: 'auth-service',
+            // generate refresh token by passing the refresh token id
+            const refreshToken = this.tokenService.generateRefreshToken({
+                ...payload,
+                id: newRefreshToken.id,
             })
 
             res.cookie('accessToken', accessToken, {
                 httpOnly: true,
                 sameSite: 'strict',
-                maxAge: 1000 * 60 * 60 * 2,
+                maxAge: 1000 * 60 * 60 * 1,
                 domain: 'localhost',
             })
 

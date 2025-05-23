@@ -41,4 +41,20 @@ export class UserService {
             throw err
         }
     }
+
+    async findEmail(email: string) {
+        try {
+            return await this.userRepository.findOne({
+                where: {
+                    email,
+                },
+            })
+        } catch (err) {
+            const error = createHttpError(
+                500,
+                'failed to fetch email from database',
+            )
+            throw error
+        }
+    }
 }

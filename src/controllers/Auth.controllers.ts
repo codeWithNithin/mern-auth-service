@@ -161,6 +161,8 @@ export class AuthController {
                 domain: 'localhost',
             })
 
+            this.logger.info('user has been loggedIn', { id: user.id })
+
             res.status(200).json({
                 id: user.id,
             })

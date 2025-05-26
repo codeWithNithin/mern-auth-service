@@ -9,6 +9,8 @@ import { RefreshToken } from '../entity/RefreshToken'
 import { TokenService } from '../services/token.services'
 import loginValidator from '../validators/login.validator'
 import { CredentialService } from '../services/credential.services'
+import authenticate from '../middlewares/authenticate.middleware'
+import { AuthRequest } from '../types'
 
 const authRouter = Router()
 
@@ -41,6 +43,14 @@ authRouter.post(
     loginValidator,
     async (req: Request, res: Response, next: NextFunction) => {
         await authController.login(req, res, next)
+    },
+)
+
+authRouter.get(
+    '/self',
+    authenticate,
+    async (req: Request, res: Response, next: NextFunction) => {
+        await authController.self(req as AuthRequest, res, next)
     },
 )
 

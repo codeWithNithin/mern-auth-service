@@ -1,5 +1,5 @@
 import { NextFunction, Response } from 'express'
-import { RegisterUserRequest } from '../types'
+import { AuthRequest, RegisterUserRequest } from '../types'
 import { UserService } from '../services/user.services'
 import { Logger } from 'winston'
 import { validationResult } from 'express-validator'
@@ -170,5 +170,10 @@ export class AuthController {
             next(error)
             return
         }
+    }
+
+    async self(req: AuthRequest, res: Response, next: NextFunction) {
+        const user = await this.userService.findById(Number(req.auth.sub))
+        res.status(200).json({ ...user, password: undefined })
     }
 }

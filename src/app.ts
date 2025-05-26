@@ -3,9 +3,11 @@ import express, { NextFunction, Request, Response } from 'express'
 import { HttpError } from 'http-errors'
 import { logger } from './config/logger'
 import authRouter from './routes/auth.routes'
+import cookieParser from 'cookie-parser'
 
 const app = express()
 
+app.use(cookieParser())
 app.use(express.json())
 
 app.get('/', (req: Request, res: Response) => {

@@ -115,5 +115,30 @@ describe('GET /auth/self', () => {
 
             expect(response.body).not.toHaveProperty('password')
         })
+
+        it('should return 401 status code if token is not present', async () => {
+            const userData = {
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: 'something@something.com',
+                password: 'secret-password',
+            }
+
+            const hashedPassword = await bcrypt.hash(userData.password, 10)
+
+            // Register user
+            const userRepo = connection.getRepository(User)
+
+            await userRepo.save({
+                ...userData,
+                password: hashedPassword,
+                role: Roles.CUSTOMER,
+            })
+
+            // set cookie to response
+            const response = await request(app).get('/auth/self').send()
+
+            expect(response.statusCode).toBe(401)
+        })
     })
 })

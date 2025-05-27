@@ -11,6 +11,7 @@ import loginValidator from '../validators/login.validator'
 import { CredentialService } from '../services/credential.services'
 import authenticate from '../middlewares/authenticate.middleware'
 import { AuthRequest } from '../types'
+import validateRefreshToken from '../middlewares/Validate-refreshToken.middleware'
 
 const authRouter = Router()
 
@@ -51,6 +52,14 @@ authRouter.get(
     authenticate,
     async (req: Request, res: Response, next: NextFunction) => {
         await authController.self(req as AuthRequest, res, next)
+    },
+)
+
+authRouter.post(
+    '/refresh',
+    validateRefreshToken,
+    async (req: Request, res: Response, next: NextFunction) => {
+        await authController.refresh(req as AuthRequest, res, next)
     },
 )
 

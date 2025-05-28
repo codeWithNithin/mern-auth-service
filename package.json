@@ -4,7 +4,7 @@
     "description": "Auth service for MERN project",
     "main": "src/server.js",
     "scripts": {
-        "dev": "cross-env NODE_ENV=dev nodemon src/server.ts",
+        "dev": "nodemon src/server.ts",
         "format:fix": "prettier . --write",
         "format:check": "prettier . --check",
         "lint:fix": "eslint . --fix",
@@ -12,7 +12,9 @@
         "prepare": "husky",
         "test": "jest --watch --runInBand",
         "start": "ts-node src/index.ts",
-        "typeorm": "typeorm-ts-node-commonjs"
+        "migration:generate": "typeorm-ts-node-commonjs migration:generate",
+        "migration:run": "typeorm-ts-node-commonjs migration:run",
+        "migration:create": "typeorm-ts-node-commonjs migration:create"
     },
     "repository": {
         "type": "git",

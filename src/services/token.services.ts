@@ -11,7 +11,7 @@ export class TokenService {
 
     generateAccessToken(payload: JwtPayload) {
         try {
-            const privateKey = fs.readFileSync('./certs/private.pem')
+            const privateKey = fs.readFileSync('./certs/private.pem', 'utf-8')
 
             const accessToken = sign(payload, privateKey, {
                 algorithm: 'RS256',

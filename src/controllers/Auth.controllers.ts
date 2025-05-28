@@ -215,6 +215,25 @@ export class AuthController {
         }
     }
 
+    async logout(req: AuthRequest, res: Response, next: NextFunction) {
+        try {
+            this.logger.info('Refresh token has been deleted', {
+                id: req.auth.id,
+            })
+            await this.tokenService.deleteRefreshToken(Number(req.auth.id))
+
+            res.clearCookie('accessToken').clearCookie('refreshToken')
+
+            this.logger.info('The user has been logged out', {
+                id: req.auth.sub,
+            })
+            res.status(200).json()
+        } catch (err) {
+            const error = createHttpError(500, 'Error while logging out')
+            next(error)
+        }
+    }
+
     setCookie(res: Response, label: string, token: string) {
         const ACCESS_TOKEN_MAX_AGE = 1000 * 60 * 60 * 1
         const REFRESH_TOKEN_MAX_AGE = 1000 * 60 * 60 * 24 * 365

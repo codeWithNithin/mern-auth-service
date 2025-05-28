@@ -1,4 +1,4 @@
-import { NextFunction, Router, Response } from 'express'
+import { NextFunction, Router, Response, Request } from 'express'
 import { TenantController } from '../controllers/Tenant.controllers'
 import { TenantService } from '../services/Tenant.services'
 import { AppDataSource } from '../config/data-source'
@@ -8,7 +8,7 @@ import authenticate from '../middlewares/authenticate.middleware'
 import { canAccess } from '../middlewares/canAccess.middleware'
 import { Roles } from '../constants'
 import tenantValidator from '../validators/tenant.validator'
-import { tenantCreateRequest } from '../types'
+import { AuthRequest, iTenantIdRequest, tenantCreateRequest } from '../types'
 
 const tenantRouter = Router()
 
@@ -24,6 +24,24 @@ tenantRouter.post(
     tenantValidator,
     async (req: tenantCreateRequest, res: Response, next: NextFunction) => {
         await tenantController.create(req, res, next)
+    },
+)
+
+tenantRouter.get(
+    '/',
+    authenticate,
+    canAccess([Roles.ADMIN]),
+    async (req: Request, res: Response, next: NextFunction) => {
+        await tenantController.find(req as AuthRequest, res, next)
+    },
+)
+
+tenantRouter.get(
+    '/:id',
+    authenticate,
+    canAccess([Roles.ADMIN]),
+    async (req: Request, res: Response, next: NextFunction) => {
+        await tenantController.findById(req as iTenantIdRequest, res, next)
     },
 )
 

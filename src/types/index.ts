@@ -27,3 +27,12 @@ export interface AuthCookie extends Request {
 export interface refreshTokenPayload extends Request {
     id: string
 }
+
+export interface iTenantData {
+    name: string
+    address: string
+}
+
+export interface tenantCreateRequest extends Request {
+    body: iTenantData
+}

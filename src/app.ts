@@ -2,8 +2,10 @@ import 'reflect-metadata'
 import express, { NextFunction, Request, Response } from 'express'
 import { HttpError } from 'http-errors'
 import { logger } from './config/logger'
-import authRouter from './routes/auth.routes'
 import cookieParser from 'cookie-parser'
+
+import authRouter from './routes/auth.routes'
+import tenantRouter from './routes/tenant.routes'
 
 const app = express()
 
@@ -16,6 +18,7 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.use('/auth', authRouter)
+app.use('/tenants', tenantRouter)
 
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message)

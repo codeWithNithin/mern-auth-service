@@ -67,7 +67,7 @@ export class TenantController {
         }
     }
 
-    async findByIdAndupdate(
+    async findByIdAndUpdate(
         req: updateTenantRequest,
         res: Response,
         next: NextFunction,
@@ -82,7 +82,7 @@ export class TenantController {
         )
 
         if (!tenantExists) {
-            const err = createHttpError(404, 'Invalid tenant id')
+            const err = createHttpError(400, 'Invalid tenant id')
             next(err)
         }
 
@@ -93,9 +93,45 @@ export class TenantController {
         }
 
         try {
-            const updatedTenant = await this.tenantService.findbyIdAndUpdate(
+            const updatedTenant = await this.tenantService.update(
                 Number(req.params.id),
                 req.body,
+            )
+            this.logger.info('found tenant list in database', { updatedTenant })
+            res.status(200).json({ id: Number(req.params.id) })
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    async findByIdAndDelete(
+        req: updateTenantRequest,
+        res: Response,
+        next: NextFunction,
+    ) {
+        if (isNaN(Number(req.params.id))) {
+            const err = createHttpError(400, 'Invalid url param')
+            next(err)
+        }
+
+        const tenantExists = await this.tenantService.findbyId(
+            Number(req.params.id),
+        )
+
+        if (!tenantExists) {
+            const err = createHttpError(400, 'Invalid tenant id')
+            next(err)
+        }
+
+        const result = validationResult(req)
+
+        if (!result.isEmpty()) {
+            return res.status(400).json({ errors: result.array() })
+        }
+
+        try {
+            const updatedTenant = await this.tenantService.delete(
+                Number(req.params.id),
             )
             this.logger.info('found tenant list in database', { updatedTenant })
             res.status(200).json({ id: Number(req.params.id) })

@@ -114,7 +114,7 @@ describe('PATCH /tenants/:id', () => {
                 .send(tenantsData)
 
             // ASSERT
-            expect(response.statusCode).toBe(404)
+            expect(response.statusCode).toBe(400)
         })
 
         it('should return 401 status code if token is invalid', async () => {

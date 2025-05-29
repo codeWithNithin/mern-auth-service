@@ -3,12 +3,18 @@ import bcrypt from 'bcrypt'
 import { UserData } from '../types'
 import { User } from '../entity/User'
 import createHttpError from 'http-errors'
-import { Roles } from '../constants'
 
 export class UserService {
     constructor(private userRepository: Repository<User>) {}
 
-    async create({ firstName, lastName, email, password }: UserData) {
+    async create({
+        firstName,
+        lastName,
+        email,
+        password,
+        role,
+        tenantId,
+    }: UserData) {
         const hashedPassword = await bcrypt.hash(password, 10)
 
         const user = await this.userRepository.findOne({
@@ -31,7 +37,8 @@ export class UserService {
                 lastName,
                 email,
                 password: hashedPassword,
-                role: Roles.CUSTOMER,
+                role,
+                tenantId: tenantId ? { id: tenantId } : undefined,
             })
         } catch (error) {
             const err = createHttpError(

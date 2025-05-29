@@ -21,7 +21,11 @@ export class TenantService {
         })
     }
 
-    async findbyIdAndUpdate(id: number, data: iTenantData) {
+    async update(id: number, data: iTenantData) {
         return await this.tenantRepository.update(id, data)
+    }
+
+    async delete(id: number) {
+        return await this.tenantRepository.delete(id)
     }
 }

@@ -33,6 +33,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: 'something@something.com',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
 
             // Act
@@ -53,6 +54,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: 'something@something.com',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
 
             // Act
@@ -75,6 +77,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: 'something@something.com',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
 
             // Act
@@ -95,6 +98,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: 'something@something.com',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
 
             // Act
@@ -118,6 +122,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: 'something@something.com',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
 
             // Act
@@ -137,6 +142,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: 'something@something.com',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
 
             // Act
@@ -159,6 +165,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: 'something@something.com',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
 
             // Act
@@ -183,6 +190,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: 'something@something.com',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
 
             // Act
@@ -224,6 +232,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: 'something@something.com',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
 
             // Act
@@ -251,6 +260,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: '',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
 
             const response = await request(app)
@@ -272,6 +282,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: 'something@something.com',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
             // ACT
             const response = await request(app)
@@ -295,6 +306,7 @@ describe('POST /auth/register', () => {
                 lastName: '',
                 email: 'something@something.com',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
             // ACT
             const response = await request(app)
@@ -318,6 +330,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: 'something@something.com',
                 password: '',
+                role: Roles.CUSTOMER,
             }
 
             // ACT
@@ -344,6 +357,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: ' something@something.com ',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
 
             // act
@@ -362,6 +376,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: 'nithin',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
 
             // act
@@ -384,6 +399,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: 'something@something.com',
                 password: 'secret',
+                role: Roles.CUSTOMER,
             }
 
             // act
@@ -405,6 +421,7 @@ describe('POST /auth/register', () => {
                 lastName: 'V Kumar',
                 email: '',
                 password: 'secret-password',
+                role: Roles.CUSTOMER,
             }
 
             // act

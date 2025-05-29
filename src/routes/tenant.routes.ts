@@ -56,8 +56,21 @@ tenantRouter.patch(
     canAccess([Roles.ADMIN]),
     tenantValidator,
     async (req: Request, res: Response, next: NextFunction) => {
-        await tenantController.findByIdAndupdate(
+        await tenantController.findByIdAndUpdate(
             req as updateTenantRequest,
+            res,
+            next,
+        )
+    },
+)
+
+tenantRouter.delete(
+    '/:id',
+    authenticate,
+    canAccess([Roles.ADMIN]),
+    async (req: Request, res: Response, next: NextFunction) => {
+        await tenantController.findByIdAndDelete(
+            req as iTenantIdRequest,
             res,
             next,
         )

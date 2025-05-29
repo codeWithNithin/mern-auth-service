@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 
 import authRouter from './routes/auth.routes'
 import tenantRouter from './routes/tenant.routes'
+import userRouter from './routes/user.routes'
 
 const app = express()
 
@@ -19,6 +20,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/auth', authRouter)
 app.use('/tenants', tenantRouter)
+app.use('/users', userRouter)
 
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message)

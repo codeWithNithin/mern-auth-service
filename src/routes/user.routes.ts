@@ -3,12 +3,12 @@ import { UserService } from '../services/user.services'
 import { AppDataSource } from '../config/data-source'
 import { User } from '../entity/User'
 import { logger } from '../config/logger'
-import registerValidator from '../validators/register.validator'
 import { UserController } from '../controllers/User.controllers'
 import authenticate from '../middlewares/authenticate.middleware'
 import { canAccess } from '../middlewares/canAccess.middleware'
 import { Roles } from '../constants'
 import { RegisterUserRequest } from '../types'
+import createUserValidator from '../validators/createUser.validator'
 
 const userRoutes = Router()
 
@@ -22,7 +22,7 @@ userRoutes.post(
     '/',
     authenticate,
     canAccess([Roles.ADMIN]),
-    registerValidator,
+    createUserValidator,
     async (req: Request, res: Response, next: NextFunction) => {
         await userController.create(req, res, next)
     },

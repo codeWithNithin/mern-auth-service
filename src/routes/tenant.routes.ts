@@ -8,7 +8,12 @@ import authenticate from '../middlewares/authenticate.middleware'
 import { canAccess } from '../middlewares/canAccess.middleware'
 import { Roles } from '../constants'
 import tenantValidator from '../validators/tenant.validator'
-import { AuthRequest, iTenantIdRequest, tenantCreateRequest } from '../types'
+import {
+    AuthRequest,
+    iTenantIdRequest,
+    tenantCreateRequest,
+    updateTenantRequest,
+} from '../types'
 
 const tenantRouter = Router()
 
@@ -42,6 +47,20 @@ tenantRouter.get(
     canAccess([Roles.ADMIN]),
     async (req: Request, res: Response, next: NextFunction) => {
         await tenantController.findById(req as iTenantIdRequest, res, next)
+    },
+)
+
+tenantRouter.patch(
+    '/:id',
+    authenticate,
+    canAccess([Roles.ADMIN]),
+    tenantValidator,
+    async (req: Request, res: Response, next: NextFunction) => {
+        await tenantController.findByIdAndupdate(
+            req as updateTenantRequest,
+            res,
+            next,
+        )
     },
 )
 

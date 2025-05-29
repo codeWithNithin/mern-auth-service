@@ -20,4 +20,8 @@ export class TenantService {
             },
         })
     }
+
+    async findbyIdAndUpdate(id: number, data: iTenantData) {
+        return await this.tenantRepository.update(id, data)
+    }
 }

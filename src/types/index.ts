@@ -42,3 +42,10 @@ export interface iTenantIdRequest extends Request {
         id: string
     }
 }
+
+export interface updateTenantRequest extends Request {
+    params: {
+        id: string
+    }
+    body: iTenantData
+}

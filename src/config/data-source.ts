@@ -13,7 +13,7 @@ export const AppDataSource = new DataSource({
     // because, if any of the entity changes, it will update the database directly.
     synchronize: true,
     logging: false,
-    entities: ['src/entity/*.ts'],
-    migrations: ['src/migration/*.ts'],
+    entities: ['src/entity/*.{ts,js}'],
+    migrations: ['src/migration/*.{ts,js}'],
     subscribers: [],
 })

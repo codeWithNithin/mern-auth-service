@@ -8,6 +8,7 @@ import { UserController } from '../controllers/User.controllers'
 import authenticate from '../middlewares/authenticate.middleware'
 import { canAccess } from '../middlewares/canAccess.middleware'
 import { Roles } from '../constants'
+import { RegisterUserRequest } from '../types'
 
 const userRoutes = Router()
 
@@ -24,6 +25,42 @@ userRoutes.post(
     registerValidator,
     async (req: Request, res: Response, next: NextFunction) => {
         await userController.create(req, res, next)
+    },
+)
+
+userRoutes.get(
+    '/',
+    authenticate,
+    canAccess([Roles.ADMIN]),
+    async (req: Request, res: Response, next: NextFunction) => {
+        await userController.find(req, res, next)
+    },
+)
+
+userRoutes.get(
+    '/:id',
+    authenticate,
+    canAccess([Roles.ADMIN]),
+    async (req: Request, res: Response, next: NextFunction) => {
+        await userController.findById(req, res, next)
+    },
+)
+
+userRoutes.patch(
+    '/:id',
+    authenticate,
+    canAccess([Roles.ADMIN]),
+    async (req: RegisterUserRequest, res: Response, next: NextFunction) => {
+        await userController.update(req, res, next)
+    },
+)
+
+userRoutes.delete(
+    '/:id',
+    authenticate,
+    canAccess([Roles.ADMIN]),
+    async (req: Request, res: Response, next: NextFunction) => {
+        await userController.delete(req, res, next)
     },
 )
 

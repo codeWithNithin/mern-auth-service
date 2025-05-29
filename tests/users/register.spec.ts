@@ -150,7 +150,7 @@ describe('POST /auth/register', () => {
 
             // assert
             const userRepository = connection.getRepository(User)
-            const users = await userRepository.find()
+            const users = await userRepository.find({ select: ['password'] })
 
             // check if the user entered password is not same as password stored in DB
             expect(users[0].password).not.toBe(userData.password)

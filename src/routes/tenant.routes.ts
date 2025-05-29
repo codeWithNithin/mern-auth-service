@@ -54,7 +54,6 @@ tenantRouter.patch(
     '/:id',
     authenticate,
     canAccess([Roles.ADMIN]),
-    tenantValidator,
     async (req: Request, res: Response, next: NextFunction) => {
         await tenantController.findByIdAndUpdate(
             req as updateTenantRequest,

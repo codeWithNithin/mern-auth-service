@@ -6,8 +6,9 @@ import request from 'supertest'
 import { Roles } from '../../src/constants'
 import app from '../../src/app'
 import { createTenant } from '../utils'
+import { User } from '../../src/entity/User'
 
-describe('DEL /tenants/:id', () => {
+describe('DEL /users/:id', () => {
     let connection: DataSource
     let jwks: JWKSMock
 
@@ -37,17 +38,27 @@ describe('DEL /tenants/:id', () => {
             const tenantRepo = connection.getRepository(Tenant)
             const tenant = await createTenant(tenantRepo)
 
-            // ARRANGE
+            const userRepo = connection.getRepository(User)
+            const newUser = await userRepo.save({
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: 'something@something.com',
+                password: 'secret-password',
+                role: Roles.MANAGER,
+                tenantId: tenant.id,
+            })
+
+            // ACT
             const token = jwks.token({
                 sub: '1',
                 role: Roles.ADMIN,
             })
 
-            const id = tenant.id
+            const id = newUser.id
 
             // ACT
             const response = await request(app)
-                .delete(`/tenants/${id}`)
+                .delete(`/users/${id}`)
                 .set('Cookie', [`accessToken=${token}`])
                 .send()
 
@@ -59,17 +70,27 @@ describe('DEL /tenants/:id', () => {
             const tenantRepo = connection.getRepository(Tenant)
             const tenant = await createTenant(tenantRepo)
 
+            const userRepo = connection.getRepository(User)
+            const newUser = await userRepo.save({
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: 'something@something.com',
+                password: 'secret-password',
+                role: Roles.MANAGER,
+                tenantId: tenant.id,
+            })
+
             // ARRANGE
             const token = jwks.token({
                 sub: '1',
                 role: Roles.ADMIN,
             })
 
-            const id = tenant.id
+            const id = newUser.id
 
             // ACT
             const response = await request(app)
-                .delete(`/tenants/${id}`)
+                .delete(`/users/${id}`)
                 .set('Cookie', [`accessToken=${token}`])
                 .send()
 
@@ -87,7 +108,7 @@ describe('DEL /tenants/:id', () => {
 
             // ACT
             const response = await request(app)
-                .delete(`/tenants/${id}`)
+                .delete(`/users/${id}`)
                 .set('Cookie', [`accessToken=${token}`])
                 .send()
 
@@ -98,7 +119,7 @@ describe('DEL /tenants/:id', () => {
         it('should return 401 status code if token is invalid', async () => {
             const id = '1'
 
-            const response = await request(app).delete(`/tenants/${id}`).send()
+            const response = await request(app).delete(`/users/${id}`).send()
 
             expect(response.statusCode).toBe(401)
 
@@ -116,7 +137,7 @@ describe('DEL /tenants/:id', () => {
             const id = '1'
 
             const response = await request(app)
-                .delete(`/tenants/${id}`)
+                .delete(`/users/${id}`)
                 .set('Cookie', [`accessToken=${managerToken};`])
                 .send()
 

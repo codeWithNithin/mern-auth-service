@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm'
 import bcrypt from 'bcrypt'
-import { UserData } from '../types'
+import { limitedUser, UserData } from '../types'
 import { User } from '../entity/User'
 import createHttpError from 'http-errors'
 
@@ -55,6 +55,7 @@ export class UserService {
                 where: {
                     email,
                 },
+                select: ['id', 'firstName', 'lastName', 'password', 'role'],
             })
         } catch (err) {
             const error = createHttpError(
@@ -71,5 +72,17 @@ export class UserService {
                 id,
             },
         })
+    }
+
+    async find() {
+        return await this.userRepository.find()
+    }
+
+    async update(id: number, userData: limitedUser) {
+        return await this.userRepository.update(id, userData)
+    }
+
+    async delete(id: number) {
+        return await this.userRepository.delete(id)
     }
 }

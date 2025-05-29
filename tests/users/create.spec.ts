@@ -119,4 +119,193 @@ describe('POST /users', () => {
             expect(users[0].role).toBe(Roles.MANAGER)
         })
     })
+
+    describe('fields are missing', () => {
+        it('should return 400 if firstName field is missing', async () => {
+            const tenantRepo = connection.getRepository(Tenant)
+            const tenant = await createTenant(tenantRepo)
+
+            const userData = {
+                firstName: '',
+                lastName: 'V Kumar',
+                email: 'something@something.com',
+                password: 'secret-password',
+                role: Roles.MANAGER,
+                tenantId: tenant.id,
+            }
+
+            // create a mock token
+            const token = jwks.token({
+                sub: '1',
+                role: Roles.ADMIN,
+            })
+
+            const response = await request(app)
+                .post('/users')
+                .set('Cookie', [`accessToken=${token};`])
+                .send(userData)
+
+            expect(response.statusCode).toBe(400)
+
+            const userRepo = connection.getRepository(User)
+            const users = await userRepo.find()
+
+            expect(users).toHaveLength(0)
+        })
+        it('should return 400 if lastName field is missing', async () => {
+            const tenantRepo = connection.getRepository(Tenant)
+            const tenant = await createTenant(tenantRepo)
+
+            const userData = {
+                firstName: 'Nithin',
+                lastName: '',
+                email: 'something@something.com',
+                password: 'secret-password',
+                role: Roles.MANAGER,
+                tenantId: tenant.id,
+            }
+
+            // create a mock token
+            const token = jwks.token({
+                sub: '1',
+                role: Roles.ADMIN,
+            })
+
+            const response = await request(app)
+                .post('/users')
+                .set('Cookie', [`accessToken=${token};`])
+                .send(userData)
+
+            expect(response.statusCode).toBe(400)
+
+            const userRepo = connection.getRepository(User)
+            const users = await userRepo.find()
+
+            expect(users).toHaveLength(0)
+        })
+        it('should return 400 if password field is missing', async () => {
+            const tenantRepo = connection.getRepository(Tenant)
+            const tenant = await createTenant(tenantRepo)
+
+            const userData = {
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: 'something@something.com',
+                password: '',
+                role: Roles.MANAGER,
+                tenantId: tenant.id,
+            }
+
+            // create a mock token
+            const token = jwks.token({
+                sub: '1',
+                role: Roles.ADMIN,
+            })
+
+            const response = await request(app)
+                .post('/users')
+                .set('Cookie', [`accessToken=${token};`])
+                .send(userData)
+
+            expect(response.statusCode).toBe(400)
+
+            const userRepo = connection.getRepository(User)
+            const users = await userRepo.find()
+
+            expect(users).toHaveLength(0)
+        })
+        it('should return 400 if password field is less than 8 chars', async () => {
+            const tenantRepo = connection.getRepository(Tenant)
+            const tenant = await createTenant(tenantRepo)
+
+            const userData = {
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: 'something@something.com',
+                password: 'secret',
+                role: Roles.MANAGER,
+                tenantId: tenant.id,
+            }
+
+            // create a mock token
+            const token = jwks.token({
+                sub: '1',
+                role: Roles.ADMIN,
+            })
+
+            const response = await request(app)
+                .post('/users')
+                .set('Cookie', [`accessToken=${token};`])
+                .send(userData)
+
+            expect(response.statusCode).toBe(400)
+
+            const userRepo = connection.getRepository(User)
+            const users = await userRepo.find()
+
+            expect(users).toHaveLength(0)
+        })
+        it('should return 400 if role field is missing', async () => {
+            const tenantRepo = connection.getRepository(Tenant)
+            const tenant = await createTenant(tenantRepo)
+
+            const userData = {
+                firstName: 'Nithin',
+                lastName: 'V Kumar',
+                email: 'something@something.com',
+                password: 'secret-password',
+                role: '',
+                tenantId: tenant.id,
+            }
+
+            // create a mock token
+            const token = jwks.token({
+                sub: '1',
+                role: Roles.ADMIN,
+            })
+
+            const response = await request(app)
+                .post('/users')
+                .set('Cookie', [`accessToken=${token};`])
+                .send(userData)
+
+            expect(response.statusCode).toBe(400)
+
+            const userRepo = connection.getRepository(User)
+            const users = await userRepo.find()
+
+            expect(users).toHaveLength(0)
+        })
+        it('should return 400 if email field is missing', async () => {
+            const tenantRepo = connection.getRepository(Tenant)
+            const tenant = await createTenant(tenantRepo)
+
+            const userData = {
+                firstName: 'Nithin',
+                lastName: '',
+                email: '',
+                password: 'secret-password',
+                role: Roles.MANAGER,
+                tenantId: tenant.id,
+            }
+
+            // create a mock token
+            const token = jwks.token({
+                sub: '1',
+                role: Roles.ADMIN,
+            })
+
+            const response = await request(app)
+                .post('/users')
+                .set('Cookie', [`accessToken=${token};`])
+                .send(userData)
+
+            expect(response.statusCode).toBe(400)
+
+            const userRepo = connection.getRepository(User)
+            const users = await userRepo.find()
+
+            expect(users).toHaveLength(0)
+        })
+    })
 })

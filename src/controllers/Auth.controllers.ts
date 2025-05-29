@@ -37,6 +37,14 @@ export class AuthController {
             password: '***',
         })
 
+        const userExists = await this.userService.findEmail(email)
+
+        if (userExists) {
+            const err = createHttpError(400, 'User already exists')
+            next(err)
+            return
+        }
+
         try {
             // create a user service, which will be responsible for creating a user
             const user = await this.userService.create({

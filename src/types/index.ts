@@ -55,3 +55,9 @@ export interface updateTenantRequest extends Request {
     }
     body: iTenantData
 }
+
+export interface limitedUser {
+    firstName: string
+    lastName: string
+    role: string
+}

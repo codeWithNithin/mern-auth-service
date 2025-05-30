@@ -10,6 +10,6 @@ module.exports = {
     },
     verbose: true,
     collectCoverage: true,
-    coverageProvider: "v8",
-    collectCoverageFrom: ['src/**/*.ts', '!tests/**', '!**/node_modules/**']
+    coverageProvider: 'v8',
+    collectCoverageFrom: ['src/**/*.ts', '!tests/**', '!**/node_modules/**'],
 }

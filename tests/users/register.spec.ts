@@ -7,7 +7,7 @@ import { Roles } from '../../src/constants'
 import { isJwtValid } from '../utils'
 import { RefreshToken } from '../../src/entity/RefreshToken'
 
-describe('POST /auth/register', () => {
+describe('POST /auth/register . only', () => {
     let connection: DataSource
 
     beforeAll(async () => {

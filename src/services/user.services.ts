@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { limitedUser, UserData } from '../types'
 import { User } from '../entity/User'
 import createHttpError from 'http-errors'

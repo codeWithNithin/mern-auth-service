@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { DataSource } from 'typeorm'
 import { AppDataSource } from '../../src/config/data-source'
 import app from '../../src/app'

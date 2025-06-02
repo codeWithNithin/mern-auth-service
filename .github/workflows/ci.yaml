@@ -1,4 +1,3 @@
-# CI pipeling
 name: CI
 on:
     pull_request:

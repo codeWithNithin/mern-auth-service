@@ -1,4 +1,3 @@
-# CI actions
 name: CI
 on:
     pull_request:

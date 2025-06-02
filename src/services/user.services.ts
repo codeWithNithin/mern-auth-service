@@ -5,7 +5,7 @@ import { User } from '../entity/User'
 import createHttpError from 'http-errors'
 
 export class UserService {
-    constructor(private userRepository: Repository<User>) {}
+    constructor(private readonly userRepository: Repository<User>) {}
 
     async create({
         firstName,
@@ -40,7 +40,7 @@ export class UserService {
                 role,
                 tenantId: tenantId ? { id: tenantId } : undefined,
             })
-        } catch (error) {
+        } catch {
             const err = createHttpError(
                 500,
                 'failed to store the data in database',
@@ -57,7 +57,7 @@ export class UserService {
                 },
                 select: ['id', 'firstName', 'lastName', 'password', 'role'],
             })
-        } catch (err) {
+        } catch {
             const error = createHttpError(
                 500,
                 'failed to fetch email from database',

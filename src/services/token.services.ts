@@ -6,7 +6,7 @@ import { RefreshToken } from '../entity/RefreshToken'
 import { User } from '../entity/User'
 
 export class TokenService {
-    constructor(private refreshTokenRepo: Repository<RefreshToken>) {}
+    constructor(private readonly refreshTokenRepo: Repository<RefreshToken>) {}
 
     generateAccessToken(payload: JwtPayload) {
         let privateKey: string
@@ -26,7 +26,7 @@ export class TokenService {
             })
 
             return accessToken
-        } catch (err) {
+        } catch {
             const error = createHttpError(500, 'Error while reading key')
             throw error
         }

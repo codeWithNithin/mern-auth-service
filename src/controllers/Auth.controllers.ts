@@ -11,10 +11,10 @@ import { Roles } from '../constants'
 
 export class AuthController {
     constructor(
-        private userService: UserService,
-        private logger: Logger,
-        private tokenService: TokenService,
-        private credentialService: CredentialService,
+        private readonly userService: UserService,
+        private readonly logger: Logger,
+        private readonly tokenService: TokenService,
+        private readonly credentialService: CredentialService,
     ) {}
 
     async register(
@@ -215,7 +215,7 @@ export class AuthController {
             res.status(200).json({
                 id: user.id,
             })
-        } catch (err) {
+        } catch {
             const error = createHttpError(
                 500,
                 'Error while updating refresh token',
@@ -238,7 +238,7 @@ export class AuthController {
                 id: req.auth.sub,
             })
             res.status(200).json()
-        } catch (err) {
+        } catch {
             const error = createHttpError(500, 'Error while logging out')
             next(error)
         }

@@ -7,8 +7,8 @@ import createHttpError from 'http-errors'
 
 export class UserController {
     constructor(
-        private userService: UserService,
-        private logger: Logger,
+        private readonly userService: UserService,
+        private readonly logger: Logger,
     ) {}
 
     async create(req: CreateUserRequest, res: Response, next: NextFunction) {

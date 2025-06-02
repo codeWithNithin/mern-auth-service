@@ -1,4 +1,10 @@
-import { NextFunction, Router, Request, Response } from 'express'
+import {
+    NextFunction,
+    Router,
+    Request,
+    Response,
+    RequestHandler,
+} from 'express'
 import { AuthController } from '../controllers/Auth.controllers'
 import { UserService } from '../services/user.services'
 import { AppDataSource } from '../config/data-source'
@@ -32,13 +38,13 @@ const authController = new AuthController(
 
 // we are adding additional callback because of context it is choosing.
 
-authRouter.post(
-    '/register',
-    registerValidator,
-    async (req: Request, res: Response, next: NextFunction) => {
-        await authController.register(req, res, next)
-    },
-)
+authRouter.post('/register', registerValidator, (async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    await authController.register(req, res, next)
+}) as RequestHandler)
 
 authRouter.post(
     '/login',
@@ -50,7 +56,7 @@ authRouter.post(
 
 authRouter.get(
     '/self',
-    authenticate,
+    authenticate as RequestHandler,
     async (req: Request, res: Response, next: NextFunction) => {
         await authController.self(req as AuthRequest, res, next)
     },
@@ -58,7 +64,7 @@ authRouter.get(
 
 authRouter.post(
     '/refresh',
-    validateRefreshToken,
+    validateRefreshToken as RequestHandler,
     async (req: Request, res: Response, next: NextFunction) => {
         await authController.refresh(req as AuthRequest, res, next)
     },
@@ -66,8 +72,8 @@ authRouter.post(
 
 authRouter.post(
     '/logout',
-    authenticate,
-    parseRefreshToken,
+    authenticate as RequestHandler,
+    parseRefreshToken as RequestHandler,
     async (req: Request, res: Response, next: NextFunction) => {
         await authController.logout(req as AuthRequest, res, next)
     },

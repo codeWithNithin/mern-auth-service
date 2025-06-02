@@ -11,10 +11,15 @@ export const AppDataSource = new DataSource({
     database: Config.DB_NAME,
     // dont use synchronize property in production
     // because, if any of the entity changes, it will update the database directly.
-    synchronize: true,
+    synchronize: false,
     logging: false,
     ssl: Config.DB_SSL === 'true' ? { rejectUnauthorized: true } : false,
     entities: ['src/entity/*.{ts,js}'],
     migrations: ['src/migration/*.{ts,js}'],
     subscribers: [],
+    extra: {
+        ssl: {
+            rejectUnauthorized: false,
+        },
+    },
 })

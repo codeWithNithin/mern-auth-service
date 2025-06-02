@@ -215,7 +215,7 @@ export class AuthController {
             res.status(200).json({
                 id: user.id,
             })
-        } catch (err) {
+        } catch {
             const error = createHttpError(
                 500,
                 'Error while updating refresh token',
@@ -238,7 +238,7 @@ export class AuthController {
                 id: req.auth.sub,
             })
             res.status(200).json()
-        } catch (err) {
+        } catch {
             const error = createHttpError(500, 'Error while logging out')
             next(error)
         }

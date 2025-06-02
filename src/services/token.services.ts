@@ -26,7 +26,7 @@ export class TokenService {
             })
 
             return accessToken
-        } catch (err) {
+        } catch {
             const error = createHttpError(500, 'Error while reading key')
             throw error
         }

@@ -74,6 +74,7 @@ describe('POST /auth/logout', () => {
                 },
             )
 
+            // access token
             const accessToken = jwks.token({
                 sub: '1',
                 role: Roles.CUSTOMER,

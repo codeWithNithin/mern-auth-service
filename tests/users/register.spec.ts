@@ -25,7 +25,7 @@ describe('POST /auth/register . only', () => {
     })
 
     describe('given all fields', () => {
-        it('should return 201 status code', async () => {
+        it.only('should return 201 status code', async () => {
             // AAA
             // Arrange
             const userData = {
@@ -40,6 +40,8 @@ describe('POST /auth/register . only', () => {
             const response = await request(app)
                 .post('/auth/register')
                 .send(userData)
+
+            console.log('response in 201', response.body)
 
             // Assert
             expect(response.status).toBe(201)

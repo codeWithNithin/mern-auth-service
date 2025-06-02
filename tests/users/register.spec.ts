@@ -41,8 +41,6 @@ describe('POST /auth/register . only', () => {
                 .post('/auth/register')
                 .send(userData)
 
-            console.log('response in 201', response.body)
-
             // Assert
             expect(response.status).toBe(201)
         })

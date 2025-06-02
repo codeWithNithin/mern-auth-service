@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { createJWKSMock, JWKSMock } from 'mock-jwks'
 import { DataSource } from 'typeorm'
 import { AppDataSource } from '../../src/config/data-source'

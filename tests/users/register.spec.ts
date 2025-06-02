@@ -25,7 +25,7 @@ describe('POST /auth/register . only', () => {
     })
 
     describe('given all fields', () => {
-        it.only('should return 201 status code', async () => {
+        it('should return 201 status code', async () => {
             // AAA
             // Arrange
             const userData = {

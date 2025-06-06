@@ -52,7 +52,7 @@ export class AuthController {
                 lastName,
                 email,
                 password,
-                role: Roles.ADMIN,
+                role: Roles.CUSTOMER,
             })
 
             this.logger.info('user has been registered', { id: user.id })

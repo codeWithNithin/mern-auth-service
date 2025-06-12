@@ -63,9 +63,7 @@ describe('GET /users', () => {
                 .set('Cookie', [`accessToken=${token}`])
                 .send()
 
-            expect(
-                (response.body as Record<string, string>).users,
-            ).toBeInstanceOf(Array)
+            expect(response.body).toBeInstanceOf(Array)
         })
 
         it('should return 40 status code if token is invalid', async () => {

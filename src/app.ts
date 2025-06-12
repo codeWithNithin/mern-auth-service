@@ -3,13 +3,23 @@ import express, { NextFunction, Request, Response } from 'express'
 import { HttpError } from 'http-errors'
 import { logger } from './config/logger'
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
 
 import authRouter from './routes/auth.routes'
 import tenantRouter from './routes/tenant.routes'
 import userRouter from './routes/user.routes'
+import { Config } from './config'
 
 const app = express()
 
+const ALLOWED_DOMAINS = [Config.ADMIN_UI]
+
+app.use(
+    cors({
+        origin: ALLOWED_DOMAINS as string[],
+        credentials: true,
+    }),
+)
 app.use(express.static('public', { dotfiles: 'allow' }))
 app.use(cookieParser())
 app.use(express.json())

@@ -40,7 +40,7 @@ export class TenantController {
         try {
             const tenants = await this.tenantService.find()
             this.logger.info('found tenant list in database', { tenants })
-            res.status(200).json({ tenants })
+            res.status(200).json(tenants)
         } catch (err) {
             next(err)
         }

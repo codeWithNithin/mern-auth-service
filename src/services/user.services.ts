@@ -71,6 +71,9 @@ export class UserService {
             where: {
                 id,
             },
+            relations: {
+                tenant: true,
+            },
         })
     }
 

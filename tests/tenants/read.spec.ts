@@ -51,11 +51,6 @@ describe('GET /tenants', () => {
         })
 
         it('should return list of tenants from database', async () => {
-            // const tenantsData = {
-            //   name: 'tenant name',
-            //   address: 'tenant address',
-            // }
-
             const token = jwks.token({
                 sub: '1',
                 role: Roles.ADMIN,
@@ -66,17 +61,10 @@ describe('GET /tenants', () => {
                 .set('Cookie', [`accessToken=${token}`])
                 .send()
 
-            expect(
-                (response.body as Record<string, string>).tenants,
-            ).toBeInstanceOf(Array)
+            expect(response.body).toBeInstanceOf(Array)
         })
 
         it('should return 401 status code if token is invalid', async () => {
-            // const tenantsData = {
-            //   name: 'tenant name',
-            //   address: 'tenant address',
-            // }
-
             const response = await request(app).get('/tenants').send()
 
             expect(response.statusCode).toBe(401)

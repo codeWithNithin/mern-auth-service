@@ -2,6 +2,7 @@ import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import { Config } from '.'
 
+// product data source
 export const AppDataSource = new DataSource({
     type: 'postgres',
     host: Config.DB_HOST,
@@ -11,7 +12,7 @@ export const AppDataSource = new DataSource({
     database: Config.DB_NAME,
     // dont use synchronize property in production
     // because, if any of the entity changes, it will update the database directly.
-    synchronize: false,
+    synchronize: true,
     logging: false,
     ssl: true,
     entities: ['src/entity/*.{ts,js}'],

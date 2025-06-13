@@ -61,7 +61,7 @@ export class UserController {
     async find(req: Request, res: Response, next: NextFunction) {
         try {
             const users = await this.userService.find()
-            res.json({ users })
+            res.json(users)
         } catch (err) {
             next(err)
         }
